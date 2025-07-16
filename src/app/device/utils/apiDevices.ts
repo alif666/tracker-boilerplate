@@ -12,11 +12,11 @@ export async function getDevicesPaginated(from: number, to: number) {
   return [data, error] as const;
 }
 
-export async function getDevicesCount(){
-  const {data, error} = await supabase.from("devices").select('*');
-  console.log("getDevicesCount()",getDevicesCount);
-  return [data?.length.toString(),error?.message];
-  ;
+export async function getDevicesCount(): Promise<[number, string | null]> {
+  const { data, error } = await supabase.from("devices").select('*');
+
+  const count = data?.length ?? 0;
+  return [count, error?.message ?? null];
 }
 
 // ✅ INSERT single device
