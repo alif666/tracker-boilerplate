@@ -19,57 +19,57 @@ export default function DeviceListTable() {
     const [devices, setDevices] = useState<Device[]>([]);
     const [resultsPerPage, setResultsPerPage] = useState(5); // Default value
     const [totalNumberOfPages, setTotalNumberOfPages] = useState(1);
-useEffect(() => {
-  async function fetchData() {
-    const [count, error] = await getDevicesCount();
+    useEffect(() => {
+        async function fetchData() {
+            const [count, error] = await getDevicesCount();
 
-    if (error) {
-      console.error("Error fetching count:", error);
-      setDevicesCount(0);
-      return;
-    }
+            if (error) {
+                console.error("Error fetching count:", error);
+                setDevicesCount(0);
+                return;
+            }
 
-    setDevicesCount(count);
-  }
+            setDevicesCount(count);
+        }
 
-  fetchData();
-}, []);
+        fetchData();
+    }, []);
 
     useEffect(() => {
         fetchDevices(resultsPerPage);
     }, [resultsPerPage]);
 
-async function fetchDevices(limit: number) {
-    const [deviceList, error] = await getDevicesPaginated(1, limit);
+    async function fetchDevices(limit: number) {
+        const [deviceList, error] = await getDevicesPaginated(1, limit);
 
-    if (error) {
-        console.error("Error fetching devices:", error);
-        setDevices([]);
-        return;
+        if (error) {
+            console.error("Error fetching devices:", error);
+            setDevices([]);
+            return;
+        }
+
+        setDevices((deviceList as Device[]) || []);
     }
-
-    setDevices((deviceList as Device[]) || []);
-}
     let pagination: number[] = [];
     function handleOnSelect(recordsPerPage: number) {
         setTotalNumberOfPages(1);
-        console.log("devicesCount",devicesCount);
+        console.log("devicesCount", devicesCount);
         console.log(typeof devicesCount);
-        
-        console.log("recordsPerPage",recordsPerPage);
+
+        console.log("recordsPerPage", recordsPerPage);
         console.log(typeof recordsPerPage);
-            setTotalNumberOfPages(devicesCount/recordsPerPage);
-                    console.log(typeof totalNumberOfPages);
-        console.log("devicesCount",devicesCount);
-        console.log("recordsPerPage",recordsPerPage);
+        setTotalNumberOfPages(devicesCount / recordsPerPage);
+        console.log(typeof totalNumberOfPages);
+        console.log("devicesCount", devicesCount);
+        console.log("recordsPerPage", recordsPerPage);
 
 
         // getPaginations
-        for(let i = 0;i<totalNumberOfPages;i++){
-            pagination.push(i+1);
+        for (let i = 0; i < totalNumberOfPages; i++) {
+            pagination.push(i + 1);
         }
-        console.log("totalNumberOfPages",totalNumberOfPages);
-        console.log("pagination",pagination);
+        console.log("totalNumberOfPages", totalNumberOfPages);
+        console.log("pagination", pagination);
         setResultsPerPage(recordsPerPage);
     }
 
@@ -82,9 +82,9 @@ async function fetchDevices(limit: number) {
                 <CustomDropdown handleOnSelect={handleOnSelect} />
             </div>
             <div className="flex flex-row justify-between mb-4">
-                {pagination.map((el:number)=>(
+                {pagination.map((el: number) => (
                     <span>P<strong>{el}</strong></span>
-                
+
                 ))}
             </div>
             {devices.length === 0 ? (
