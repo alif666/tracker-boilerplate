@@ -6,7 +6,7 @@ import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, Hi
 
 export function CustomSideBar() {
   return (
-    <Sidebar aria-label="Default sidebar example">
+    <Sidebar aria-label="Default Sidebar">
       <SidebarItems>
         <SidebarItemGroup>
           <SidebarItem href="#" icon={HiChartPie}>

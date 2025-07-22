@@ -26,7 +26,7 @@ export default function CustomDropdown({ handleOnSelect }: CustomDropdownProps) 
             onChange={handleChange}
             name="resultsPerPage"
             value={selected}
-            className="border rounded p-1"
+            className="text-right bg-transparent gap-2 rounded-sm"
         >
             {options.map((opt) => (
                 <option key={opt.value} value={opt.value}>

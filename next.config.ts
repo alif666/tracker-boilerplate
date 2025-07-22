@@ -1,8 +1,12 @@
-import type { NextConfig } from "next";
-import withFlowbiteReact from "flowbite-react/plugin/nextjs";
+import type { NextConfig } from 'next';
+import withFlowbiteReact from 'flowbite-react/plugin/nextjs';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    serverActions: true, // Optional if you're using server actions
+  },
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 export default withFlowbiteReact(nextConfig);

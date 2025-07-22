@@ -1,8 +1,9 @@
 "use client";
-
 import React, { useEffect, useState } from 'react';
-import { getDevicesCount, getDevicesPaginated } from './utils/apiDevices';
+import { getDevicesPaginated } from './utils/apiDevices';
 import CustomDropdown from './utils/CustomDropdown';
+import { IoFilterCircleOutline } from 'react-icons/io5';
+import { Card, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 'flowbite-react';
 
 interface Device {
     id: string;
@@ -14,26 +15,15 @@ interface Device {
     device_ref_id: string;
 }
 
-export default function DeviceListTable() {
-    const [devicesCount, setDevicesCount] = useState(0);
-    const [devices, setDevices] = useState<Device[]>([]);
-    const [resultsPerPage, setResultsPerPage] = useState(5); // Default value
+interface DeviceListProps {
+    deviceList: Device[];
+}
+
+export default function DeviceListTable({ deviceList }: DeviceListProps) {
+    const [devices, setDevices] = useState<Device[]>(deviceList);
+    const [resultsPerPage, setResultsPerPage] = useState(5);
     const [totalNumberOfPages, setTotalNumberOfPages] = useState(1);
-    useEffect(() => {
-        async function fetchData() {
-            const [count, error] = await getDevicesCount();
 
-            if (error) {
-                console.error("Error fetching count:", error);
-                setDevicesCount(0);
-                return;
-            }
-
-            setDevicesCount(count);
-        }
-
-        fetchData();
-    }, []);
 
     useEffect(() => {
         fetchDevices(resultsPerPage);
@@ -41,68 +31,58 @@ export default function DeviceListTable() {
 
     async function fetchDevices(limit: number) {
         const [deviceList, error] = await getDevicesPaginated(1, limit);
-
         if (error) {
             console.error("Error fetching devices:", error);
             setDevices([]);
             return;
         }
-
-        setDevices((deviceList as Device[]) || []);
+        setDevices(deviceList || []);
     }
-    let pagination: number[] = [];
+
     function handleOnSelect(recordsPerPage: number) {
-        setTotalNumberOfPages(1);
-        console.log("devicesCount", devicesCount);
-        console.log(typeof devicesCount);
-
-        console.log("recordsPerPage", recordsPerPage);
-        console.log(typeof recordsPerPage);
-        setTotalNumberOfPages(devicesCount / recordsPerPage);
-        console.log(typeof totalNumberOfPages);
-        console.log("devicesCount", devicesCount);
-        console.log("recordsPerPage", recordsPerPage);
-
-
-        // getPaginations
-        for (let i = 0; i < totalNumberOfPages; i++) {
-            pagination.push(i + 1);
-        }
-        console.log("totalNumberOfPages", totalNumberOfPages);
-        console.log("pagination", pagination);
         setResultsPerPage(recordsPerPage);
     }
 
+    const pagination = Array.from({ length: totalNumberOfPages }, (_, i) => i + 1);
+
     return (
         <div>
-            <h1 className="text-xl font-semibold mb-4">Devices</h1>
-
-            <div className="flex flex-row justify-between mb-4">
-                <span>Total devices: <strong>{devicesCount}</strong></span>
-                <CustomDropdown handleOnSelect={handleOnSelect} />
-            </div>
-            <div className="flex flex-row justify-between mb-4">
-                {pagination.map((el: number) => (
-                    <span>P<strong>{el}</strong></span>
-
-                ))}
-            </div>
-            {devices.length === 0 ? (
-                <p>No devices found.</p>
-            ) : (
-                <ul>
-                    {devices.map((d) => (
-                        <li key={d.id} className="flex gap-4 border p-2 mb-2 text-sm">
-                            <span className="basis-1/6">{d.team}</span>
-                            <span className="basis-1/6">{d.device_name}</span>
-                            <span className="basis-1/6">{d.device_category}</span>
-                            <span className="basis-1/6">{d.device_group}</span>
-                            <span className="basis-1/6">{d.device_branch}</span>
-                            <span className="basis-1/6">{d.device_ref_id}</span>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            Showing Results of <CustomDropdown handleOnSelect={handleOnSelect} />
+            <Card>
+                <Table id="filter-table">
+                    <TableHead className=" p-0">
+                        <TableRow className="flex flex-row border gap-4  p-2 mb-2 text-sm">
+                            {["Team", "Name", "Category", "Group", "Branch", "Ref. Id"].map((header) => (
+                                <TableHeadCell key={header} className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">
+                                    <span className="flex flex-row items-center justify-center">
+                                        <IoFilterCircleOutline className="h-6 w-6" />{header}
+                                    </span>
+                                </TableHeadCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody className="items-right">
+                        {devices.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={6} className="text-center text-sm text-white">
+                                    No devices found.
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            devices.map((d: Device) => (
+                                <TableRow key={d.id} className="flex gap-4 border-b-1 text-center border-gray-100 p-2 mb-2 text-sm">
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.team}</TableCell>
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.device_name}</TableCell>
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.device_category}</TableCell>
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.device_group}</TableCell>
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.device_branch}</TableCell>
+                                    <TableCell className="font-medium text-gray-900 whitespace-nowrap dark:text-white basis-1/6">{d.device_ref_id}</TableCell>
+                                </TableRow>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+            </Card>
         </div>
     );
 }

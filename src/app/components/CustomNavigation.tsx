@@ -12,7 +12,7 @@ export default function CustomNavigation() {
         <div className='flex flex-row'>
 
             {isDisplayed ? (
-                <div className='h-screen'>
+                <div className='max-w-sm h-screen'>
                     <CustomSideBar />
                 </div>) : (<></>)}
             <CustomButtonIcon HandleOnClick={handleOnClickEvent} />

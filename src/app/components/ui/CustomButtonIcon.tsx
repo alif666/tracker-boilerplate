@@ -9,8 +9,8 @@ export default function CustomButtonIcon({ HandleOnClick }: CustomButtonIconProp
         <div className="flex flex-wrap gap-2">
 
 
-            <Button className='border-0 hover:border-0 hover:text-dark' pill onClick={HandleOnClick}>
-                <HiOutlineArrowRight className="h-6 w-6" />
+            <Button className='bg-transparent px-2 text-gray-100 rounded-sm  shadow-md hover:text-dark'  onClick={HandleOnClick}>
+                <HiOutlineArrowRight className="h-4 w-4" />
             </Button>
         </div>
     )

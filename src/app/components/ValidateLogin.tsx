@@ -2,7 +2,6 @@
 import { useEffect, useState, ReactNode } from "react";
 import { fetchCurrentUser } from "../lib/api";
 import { ValidateLoginContext } from "../lib/ValidateLoginContext";
-
 interface ValidateLoginProps {
   children: ReactNode;
 }
