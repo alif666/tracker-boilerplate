@@ -5,6 +5,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeModeScript } from 'flowbite-react';
 import CustomNavigation from "./components/CustomNavigation";
+import BreadCrumb from "./components/ui/BreadCrumb";
+import CustomHeader from "./components/ui/CustomHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,18 +30,32 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeModeScript />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
-        <div className="flex min-h-screen">
-          {/* Sidebar */}
-          <div className="w-64">
+
+        <div className="flex h-screen flex-row md:flex-col md:overflow-hidden">
+
+          <header className="w-2/4 flex-none md:w-64">
             <CustomNavigation />
+            <CustomHeader />
+            <BreadCrumb />
+
+          </header>
+
+
+
+
+          <div className="flex-grow  md:overflow-y-auto">
+            {children}
+
           </div>
 
-          {/* Main content */}
-          <main className="flex-grow p-6">
-            {children}
-          </main>
         </div>
+
+
+        <footer className=" items-center justify-center">
+          <h1>FOOTER</h1>
+        </footer>
+
       </body>
-    </html>
+    </html >
   );
 }

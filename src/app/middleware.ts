@@ -5,12 +5,12 @@ export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Define protected routes
-  const protectedPaths = ['/device', '/api/devices'];
+  const protectedPaths = ['/device', '/api/devices', '/dashboard'];
   const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
   if (isProtected && !token) {
     // Redirect to login if unauthenticated
-    const loginUrl = new URL('/login', req.url);
+    const loginUrl = new URL('/Login', req.url);
     return NextResponse.redirect(loginUrl);
   }
 

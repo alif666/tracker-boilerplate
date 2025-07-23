@@ -1,35 +1,73 @@
-
 "use client";
 
-import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from "flowbite-react";
-import { HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
+import {
+  Sidebar,
+  SidebarItem,
+  SidebarItemGroup,
+  SidebarItems,
+} from "flowbite-react";
+import {
+  HiChartPie,
+  HiUser,
+  HiInbox,
+  HiShoppingBag,
+  HiTable,
+  HiViewBoards,
+  HiArrowSmRight,
+} from "react-icons/hi";
+import { usePathname } from "next/navigation";
+import Landing from "./Landing";
 
 export function CustomSideBar() {
+  const pathName = usePathname();
+
+  const navLinks = [
+    {
+      id: 1,
+      url: "/dashboard",
+      name: "DASHBOARD",
+      icon: HiChartPie,
+    },
+    {
+      id: 2,
+      url: "/device",
+      name: "DEVICE",
+      icon: HiInbox,
+    },
+    {
+      id: 3,
+      url: "/setup",
+      name: "SETUP",
+      icon: HiViewBoards,
+    },
+    {
+      id: 4,
+      url: "/report",
+      name: "REPORT",
+      icon: HiTable,
+    },
+    {
+      id: 5,
+      url: "/history",
+      name: "HISTORY",
+      icon: HiShoppingBag,
+    }
+  ];
+  if(pathName.trimStart().length===0) return <Landing/>
   return (
-    <Sidebar aria-label="Default Sidebar">
+    <Sidebar aria-label="Main navigation sidebar">
       <SidebarItems>
         <SidebarItemGroup>
-          <SidebarItem href="#" icon={HiChartPie}>
-            Dashboard
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiViewBoards} label="Pro" labelColor="dark">
-            Kanban
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiInbox} label="3">
-            Inbox
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiUser}>
-            Users
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiShoppingBag}>
-            Products
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiArrowSmRight}>
-            Sign In
-          </SidebarItem>
-          <SidebarItem href="#" icon={HiTable}>
-            Sign Up
-          </SidebarItem>
+          {navLinks.map((nav) => (
+            <SidebarItem
+              key={nav.id}
+              href={nav.url}
+              icon={nav.icon}
+              active={pathName.startsWith(nav.url)}
+            >
+              {nav.name}
+            </SidebarItem>
+          ))}
         </SidebarItemGroup>
       </SidebarItems>
     </Sidebar>
